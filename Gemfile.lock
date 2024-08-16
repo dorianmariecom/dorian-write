@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dorian-rename (0.0.1)
+    dorian-write (0.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -94,7 +94,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  dorian-rename!
+  dorian-write!
   rspec
   rubocop-rails-omakase
 
