@@ -1,8 +1,21 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-if ARGV.size != 1 || ARGV[0] == "--help" || ARGV[0] == "-h"
-  abort "USAGE: ... | write FILE"
+if ARGV.size < 1 || ARGV.first == "--help" || ARGV.first == "-h"
+  abort "USAGE: ... | write [-a|--append|-p|--prepend] FILES..."
 end
 
-File.write(ARGV.first, $stdin.each_line.to_a.map(&:strip).join("\n"))
+PREPEND = ARGV.detect { |argv| argv == "-p" || argv == "--prepend" }
+APPEND = ARGV.detect { |argv| argv == "-a" || argv == "--append" }
+FILES = ARGV - [PREPEND] - [APPEND]
+CONTENT = $stdin.each_line.to_a.map(&:strip).join("\n")
+
+FILES.each do |file|
+  if APPEND
+    File.write(file, [File.read(file).strip, CONTENT].join("\n"))
+  elsif PREPEND
+    File.write(file, [CONTENT, File.read(file).strip].join("\n"))
+  else
+    File.write(file, CONTENT)
+  end
+end
