@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "dorian-write"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
   s.summary = "writes to a file"
   s.description = s.summary
   s.authors = ["Dorian Marié"]
