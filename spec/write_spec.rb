@@ -8,7 +8,7 @@ RSpec.describe "write" do
     tempfile = Tempfile.create
     File.write(tempfile, "1\n2\n3\n4")
     `cat #{tempfile.path} | grep 2 | bin/write #{tempfile.path}`
-    expect(File.read(tempfile)).to eq("2")
+    expect(File.read(tempfile)).to eq("2\n")
     begin
       File.delete(tempfile)
     rescue StandardError

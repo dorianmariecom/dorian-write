@@ -1,21 +1,29 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-if ARGV.size < 1 || ARGV.first == "--help" || ARGV.first == "-h"
-  abort "USAGE: ... | write [-a|--append|-p|--prepend] FILES..."
+require "dorian/arguments"
+
+parsed = Dorian::Arguments.parse(
+  prepend: { alias: :p },
+  append: { alias: :a },
+  version: { alias: :v },
+  help: { alias: :h }
+)
+
+abort parsed.help if parsed.options.help
+
+if parsed.options.version
+  abort File.read(File.expand_path("../../VERSION", __FILE__))
 end
 
-PREPEND = ARGV.detect { |argv| argv == "-p" || argv == "--prepend" }
-APPEND = ARGV.detect { |argv| argv == "-a" || argv == "--append" }
-FILES = ARGV - [PREPEND] - [APPEND]
-CONTENT = $stdin.each_line.to_a.map(&:strip).join("\n")
+content = $stdin.each_line.to_a.join
 
-FILES.each do |file|
-  if APPEND
-    File.write(file, [File.read(file).strip, CONTENT].join("\n"))
-  elsif PREPEND
-    File.write(file, [CONTENT, File.read(file).strip].join("\n"))
+(parsed.files + parsed.arguments).each do |file|
+  if parsed.options.append
+    File.write(file, [File.read(file).strip, content].join("\n"))
+  elsif parsed.options.prepend
+    File.write(file, [content, File.read(file).strip].join("\n"))
   else
-    File.write(file, CONTENT)
+    File.write(file, content)
   end
 end
