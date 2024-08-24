@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dorian-write (0.1.2)
+    dorian-write (1.0.0)
       dorian-arguments
 
 GEM
