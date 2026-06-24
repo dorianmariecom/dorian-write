@@ -1,28 +1,41 @@
-# `dorian-replace`
+# `dorian-write`
 
-Replace some string with some other string from the files provided
+Write stdin to one or more files.
 
-e.g. `replace "cool" "coolest" *.md`
-
-### Install
+## Install
 
 ```bash
-gem install dorian-replace
+gem install dorian-write
 ```
 
-Or as part of my other gems:
+Also included in the aggregate gem:
 
 ```bash
 gem install dorian
 ```
 
-### Usage
-
-From my history:
+## Usage
 
 ```bash
-replace "WorldCountry.spain" "WorldCountry.by_name('Espagne')" test/**/*
-replace "Né(e) à l'étranger / Outre-Mer" "Né(e) à l'étranger" test/**/*
-git grep -l " doc " app/assets/ | xargs replace " doc " " document "
-git grep -l "={doc}" | xargs replace "={document}"
+write [options] file [file ...]
+```
+
+Run `write -h` for generated option details and `write -v` for the installed version.
+
+## Notes
+
+- By default replaces file content. Use `--append`/`-a` or `--prepend`/`-p` to keep existing content.
+
+## Examples
+
+### Replace a file with filtered content
+
+```bash
+grep important notes.txt | write important.txt
+```
+
+### Append stdin
+
+```bash
+date | write --append log.txt
 ```
